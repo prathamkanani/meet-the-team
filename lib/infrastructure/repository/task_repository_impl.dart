@@ -114,18 +114,15 @@ class TaskRepositoryImpl implements TaskRepository {
 
   @override
   getTasks(dayPeriod) async {
-    // await Future.delayed(const Duration(milliseconds: 300));
-    // final filtered =
-    //     _tasks.where((task) => task.cycle == cycle).toList();
-    // return filtered;
     await Future.delayed(const Duration(seconds: 1));
 
     _counter++;
 
     if (_counter < 3) {
-      throw NetworkException(
-        message: "Mock: No internet (attempt $_counter)",
-      );
+      // throw NetworkException(
+      //   message: "Mock: No internet (attempt $_counter)",
+      // );
+      throw Error();
     }
     return _tasks;
   }

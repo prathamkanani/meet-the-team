@@ -19,8 +19,8 @@ class AMPMCycle extends StatelessWidget {
       bloc: _taskBloc,
       builder: (_, state) {
         return PinnedHeaderSliver(
-          child: BaseContainer(
-            backgroundColor: AppColors.background,
+          child: Container(
+            color: AppColors.background,
             padding: const EdgeInsets.all(16),
             child: Row(
               mainAxisSize: .max,

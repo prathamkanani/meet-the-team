@@ -27,6 +27,8 @@ class DailyTaskHomePage extends StatefulWidget {
 class _DailyTaskHomePageState extends State<DailyTaskHomePage> {
   late final TaskBloc _taskBloc;
   bool _isErrorPageOpen = false;
+  final TimeOfDay current = TimeOfDay.now();
+  late DayPeriod dayPeriod = current.period;
 
   @override
   void initState() {
@@ -45,42 +47,50 @@ class _DailyTaskHomePageState extends State<DailyTaskHomePage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            const _DailyTaskAppBar(),
+        child: RefreshIndicator(
+          onRefresh: () async => _taskBloc.add(LoadTasksEvent(dayPeriod)),
+          child: CustomScrollView(
+            slivers: [
+              const _DailyTaskAppBar(),
 
-            AMPMCycle(taskBloc: _taskBloc),
+              AMPMCycle(taskBloc: _taskBloc),
 
-            ClosingTimer(taskBloc: _taskBloc),
+              ClosingTimer(taskBloc: _taskBloc),
 
-            SliverPadding(
-              padding: const EdgeInsetsGeometry.all(16),
-              sliver: BlocConsumer<TaskBloc, TaskState>(
-                bloc: _taskBloc,
-                listener: (context, state) {
-                  if (state is TaskErrorState && !_isErrorPageOpen) {
-                    navigateToErrorPage(context, state);
-                  } else if (state is TaskLoadedState && _isErrorPageOpen) {
-                    Navigator.pop(context);
-                  }
-                },
-                builder: (_, state) {
-                  return switch (state) {
-                    TaskInitialState() => const SliverLoader(),
-                    TaskLoadingState() => const SliverLoader(),
-                    TaskLoadedState() => TaskList(
-                      tasks: state.tasks,
-                      dayPeriod: state.dayPeriod,
-                      onAdd: () => _showAddTaskSheet(context),
-                    ),
-                    TaskErrorState() => const SliverToBoxAdapter(
-                      child: SizedBox.shrink(),
-                    ),
-                  };
-                },
+              SliverPadding(
+                padding: const EdgeInsetsGeometry.all(16),
+                sliver: BlocConsumer<TaskBloc, TaskState>(
+                  bloc: _taskBloc,
+                  listener: (context, state) {
+                    if (state is TaskErrorState && !_isErrorPageOpen) {
+                      navigateToErrorPage(context, state);
+                    } else if (state is TaskLoadedState && _isErrorPageOpen) {
+                      Navigator.pop(context);
+                    }
+                  },
+                  builder: (_, state) {
+                    final Widget loader = const SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Loader(),
+                    );
+
+                    return switch (state) {
+                      TaskInitialState() => loader,
+                      TaskLoadingState() => loader,
+                      TaskLoadedState() => TaskList(
+                        tasks: state.tasks,
+                        dayPeriod: state.dayPeriod,
+onAdd: () => _showAddTaskSheet(context),
+                      ),
+                      TaskErrorState() => const SliverToBoxAdapter(
+                        child: SizedBox.shrink(),
+                      ),
+                    };
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButton: AddTaskButton(onTap: _showAddTaskSheet),
