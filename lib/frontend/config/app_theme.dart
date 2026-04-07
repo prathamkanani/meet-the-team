@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // static final ThemeData lightTheme = ThemeData(
-  //   colorScheme: ColorScheme(
-  //     brightness: .light,
-  //     primary: primary,
-  //     onPrimary: Color(0xFFFFFFFF),
-  //     secondary: secondary,
-  //     onSecondary: onSecondary,
-  //     error: Color(0xFF9e403c),
-  //     onError: Color(0xFFFFFFFF),
-  //     surface: Color(0xFFf7f9fb),
-  //     onSurface: Color(0xFFFFFFFF),
-  //   ),
-  // );
+  static final ThemeData lightTheme = ThemeData(
+    // colorScheme: ColorScheme(
+    //   brightness: .light,
+    //   primary: primary,
+    //   onPrimary: Color(0xFFFFFFFF),
+    //   secondary: secondary,
+    //   onSecondary: onSecondary,
+    //   error: Color(0xFF9e403c),
+    //   onError: Color(0xFFFFFFFF),
+    //   surface: Color(0xFFf7f9fb),
+    //   onSurface: Color(0xFFFFFFFF),
+    // ),
+  );
 }
 
 class AppColors {
+  static const Color onSurface = Color(0xFFFFFFFF);
+
   // Background
   static const Color background = Color(0xFFf7f9fb);
   static const Color cardBackground = Color(0xFFFFFFFF);
@@ -63,6 +65,7 @@ class AppColors {
 
   // User background
   static const Color userBg = Color(0xFF324854);
+  static const Color userIcon = Color(0xFFFFFFFF);
 }
 
 class AppTextStyles {

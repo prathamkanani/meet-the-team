@@ -14,22 +14,8 @@ class ErrorRepositoryImpl implements ErrorRepository {
       name: 'AppError',
     );
 
+    // log in the db
     await _log(exception);
-  }
-
-  @override
-  Future<void> retry(Future<void> Function() retryCallback) async {
-    try {
-      await retryCallback();
-    } catch (e, stack) {
-      if (e is AppException) rethrow;
-
-      throw ServerException(
-        message: "Retry execution failed",
-        error: e,
-        trace: stack,
-      );
-    }
   }
 
   Future<void> _log(AppException exception) async {

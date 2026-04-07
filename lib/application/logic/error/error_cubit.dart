@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entity/error.dart';
 import '../../../domain/repository/error_repository.dart';
-import '../../../domain/repository/user_repository.dart';
 import '../../../infrastructure/model/error_model.dart';
 import 'error_state.dart';
 

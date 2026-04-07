@@ -70,60 +70,8 @@ class _StatusIcon extends StatelessWidget {
       child: Icon(
         icon,
         size: 18,
-        color: isActive ? Colors.white : AppColors.statusNeutral,
+        color: isActive ? AppColors.onSurface : AppColors.statusNeutral,
       ),
     );
   }
 }
-
-// class _WarningIcon extends StatelessWidget {
-//   final bool isActive;
-//
-//   const _WarningIcon({required this.isActive});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: AppDimensions.statusIconSize,
-//       height: AppDimensions.statusIconSize,
-//       decoration: BoxDecoration(
-//         color: isActive ? AppColors.statusWarnOrangeBg : Colors.transparent,
-//         shape: BoxShape.circle,
-//         border: isActive
-//             ? null
-//             : Border.all(color: AppColors.statusNeutral, width: 1.5),
-//       ),
-//       child: Icon(
-//         Icons.warning_rounded,
-//         size: 18,
-//         color: isActive ? Colors.white : AppColors.statusNeutral,
-//       ),
-//     );
-//   }
-// }
-
-// class _BlockIcon extends StatelessWidget {
-//   final bool isActive;
-//
-//   const _BlockIcon({required this.isActive});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: AppDimensions.statusIconSize,
-//       height: AppDimensions.statusIconSize,
-//       decoration: BoxDecoration(
-//         color: isActive ? AppColors.statusBlockRedBg : Colors.transparent,
-//         shape: BoxShape.circle,
-//         border: isActive
-//             ? null
-//             : Border.all(color: AppColors.statusNeutral, width: 1.5),
-//       ),
-//       child: Icon(
-//         Icons.block_rounded,
-//         size: 18,
-//         color: isActive ? Colors.white : AppColors.statusNeutral,
-//       ),
-//     );
-//   }
-// }

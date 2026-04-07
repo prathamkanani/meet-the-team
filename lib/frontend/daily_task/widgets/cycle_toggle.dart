@@ -1,7 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../application/logic/daily_task/task_bloc.dart';
+import '../../../application/logic/daily_task/task_event.dart';
+import '../../../application/logic/daily_task/task_state.dart';
 import '../../common/base_container.dart';
 import '../../config/app_spacing.dart';
 import '../../config/app_theme.dart';
+
+class AMPMCycle extends StatelessWidget {
+  final TaskBloc _taskBloc;
+
+  const AMPMCycle({super.key, required TaskBloc taskBloc})
+    : _taskBloc = taskBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TaskBloc, TaskState>(
+      bloc: _taskBloc,
+      builder: (_, state) {
+        return PinnedHeaderSliver(
+          child: BaseContainer(
+            backgroundColor: AppColors.background,
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisSize: .max,
+              mainAxisAlignment: .center,
+              children: [
+                CycleToggle(
+                  selected: state.dayPeriod,
+                  onChanged: (cycle) {
+                    _taskBloc.add(SwitchCycleEvent(cycle));
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
 
 class CycleToggle extends StatelessWidget {
   final DayPeriod selected;
