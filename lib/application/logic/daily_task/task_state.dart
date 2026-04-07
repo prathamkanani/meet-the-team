@@ -23,7 +23,7 @@ final class TaskLoadedState extends TaskState {
 }
 
 final class TaskErrorState extends TaskState {
-  final AppException? exception;
+  final AppException exception;
 
-  const TaskErrorState({required super.dayPeriod, this.exception});
+  const TaskErrorState({required super.dayPeriod, required this.exception});
 }

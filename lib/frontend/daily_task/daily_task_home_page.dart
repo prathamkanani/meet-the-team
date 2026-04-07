@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../domain/entity/error.dart';
 import '../common/base_container.dart';
+import '../common/error_dialog.dart';
 import '../common/loader.dart';
 import '../config/app_spacing.dart';
 import 'widgets/add_task_button.dart';
@@ -63,7 +65,8 @@ class _DailyTaskHomePageState extends State<DailyTaskHomePage> {
                   bloc: _taskBloc,
                   listener: (context, state) {
                     if (state is TaskErrorState && !_isErrorPageOpen) {
-                      navigateToErrorPage(context, state);
+                      errorDialog(context, state.exception);
+                      // navigateToErrorPage(context, state);
                     } else if (state is TaskLoadedState && _isErrorPageOpen) {
                       Navigator.pop(context);
                     }
@@ -80,7 +83,7 @@ class _DailyTaskHomePageState extends State<DailyTaskHomePage> {
                       TaskLoadedState() => TaskList(
                         tasks: state.tasks,
                         dayPeriod: state.dayPeriod,
-onAdd: () => _showAddTaskSheet(context),
+                        onAdd: () => _showAddTaskSheet(context),
                       ),
                       TaskErrorState() => const SliverToBoxAdapter(
                         child: SizedBox.shrink(),
@@ -114,6 +117,12 @@ onAdd: () => _showAddTaskSheet(context),
         ),
       ),
     ).then((_) => _isErrorPageOpen = false);
+  }
+
+  void errorDialog(BuildContext context, AppException exception) {
+    showDialog(context: context, builder: (context) {
+      return ErrorDialog(exception: exception);
+    });
   }
 
   void _showAddTaskSheet(BuildContext context) {

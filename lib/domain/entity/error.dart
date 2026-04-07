@@ -1,10 +1,16 @@
 enum AppExceptionType { network, server, state, argument, unknown }
 
 class ErrorEntity {
+  /// The human-readable message.
   final String message;
+
+  /// The underlying error.
   final Object? error;
 
-  const ErrorEntity({required this.message, this.error});
+  /// The stacktrace, if available.
+  final StackTrace? trace;
+
+  const ErrorEntity({required this.message, this.error, this.trace});
 }
 
 abstract class AppException implements Exception {

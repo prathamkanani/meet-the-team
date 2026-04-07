@@ -1,7 +1,7 @@
 import '../../domain/entity/error.dart';
 
 class ErrorModel extends ErrorEntity {
-  const ErrorModel({required super.message, super.error});
+  const ErrorModel({required super.message, super.error, super.trace});
 }
 
 class ErrorMapper {
