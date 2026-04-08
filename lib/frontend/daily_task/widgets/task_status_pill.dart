@@ -10,10 +10,12 @@ class TaskStatusPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppColorsExtension cse = Theme.of(context).extension()!;
+
     return Container(
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: AppColors.statusPillBg,
+        color: cse.statusPill,
         borderRadius: BorderRadius.circular(50),
       ),
       child: Row(
@@ -22,22 +24,22 @@ class TaskStatusPill extends StatelessWidget {
           _StatusIcon(
             icon: Icons.check_circle_rounded,
             isActive: status.isApproved,
-            activeColor: AppColors.statusCheckGreenBg,
-            inactiveColor: AppColors.statusNeutral,
+            activeColor: cse.success,
+            inactiveColor: cse.neutral,
           ),
           AppSpacing.w08,
           _StatusIcon(
             icon: Icons.warning_rounded,
             isActive: status.hasWarning,
-            activeColor: AppColors.statusWarnOrangeBg,
-            inactiveColor: AppColors.statusNeutral,
+            activeColor: cse.warning,
+            inactiveColor: cse.neutral,
           ),
           AppSpacing.w08,
           _StatusIcon(
             icon: Icons.block_rounded,
             isActive: status.isBlocked,
-            activeColor: AppColors.statusBlockRedBg,
-            inactiveColor: AppColors.statusNeutral,
+            activeColor: cse.danger,
+            inactiveColor: cse.neutral,
           ),
         ],
       ),
@@ -60,6 +62,9 @@ class _StatusIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppColorsExtension cse = Theme.of(context).extension()!;
+    final ColorScheme cs = ColorScheme.of(context);
+
     return Container(
       width: AppDimensions.statusIconSize,
       height: AppDimensions.statusIconSize,
@@ -67,11 +72,7 @@ class _StatusIcon extends StatelessWidget {
         color: isActive ? activeColor : Colors.transparent,
         shape: BoxShape.circle,
       ),
-      child: Icon(
-        icon,
-        size: 18,
-        color: isActive ? AppColors.onSurface : AppColors.statusNeutral,
-      ),
+      child: Icon(icon, color: isActive ? cs.onPrimary : cse.neutral),
     );
   }
 }

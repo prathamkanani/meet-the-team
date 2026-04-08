@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import '../config/app_theme.dart';
 
 class Loader extends StatelessWidget {
   const Loader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    final ColorScheme cs = ColorScheme.of(context);
+
+    return Center(
       child: CircularProgressIndicator(
-        color: AppColors.textPrimary,
+        color: cs.onSurface,
         strokeWidth: 2,
       ),
     );

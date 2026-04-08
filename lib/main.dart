@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'frontend/common/error_page.dart';
+import 'frontend/config/app_theme.dart';
 import 'frontend/daily_task/daily_task_home_page.dart';
 import 'infrastructure/app_injector.dart';
 
@@ -14,8 +15,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: DailyTaskHomePage(),
+    return MaterialApp(
+      theme: AppTheme.lightTheme,
+      home: const DailyTaskHomePage(),
     );
   }
 }

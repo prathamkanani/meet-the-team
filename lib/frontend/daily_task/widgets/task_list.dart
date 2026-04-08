@@ -42,26 +42,27 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppColorsExtension cse = Theme.of(context).extension()!;
+    final TextTheme th = TextTheme.of(context);
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             cycle == .am ? Icons.wb_sunny_outlined : Icons.nightlight_outlined,
-            color: AppColors.statusNeutral,
+            color: cse.neutral,
             size: 48,
           ),
           AppSpacing.h16,
           Text(
             'No tasks in ${cycle == .am ? 'AM' : 'PM'} cycle',
-            style: AppTextStyles.cardTitle.copyWith(
-              color: AppColors.textSecondary,
-            ),
+            style: th.titleMedium?.copyWith(color: cse.neutral),
           ),
           AppSpacing.h08,
-          const Text(
+          Text(
             'Tap the button below to add your first task.',
-            style: AppTextStyles.cardDescription,
+            style: th.titleSmall,
           ),
         ],
       ),

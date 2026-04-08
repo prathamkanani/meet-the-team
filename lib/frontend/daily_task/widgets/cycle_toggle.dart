@@ -15,12 +15,14 @@ class AMPMCycle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme cs = ColorScheme.of(context);
+
     return BlocBuilder<TaskBloc, TaskState>(
       bloc: _taskBloc,
       builder: (_, state) {
         return PinnedHeaderSliver(
           child: Container(
-            color: AppColors.background,
+            color: cs.surfaceContainerHighest,
             padding: const EdgeInsets.all(16),
             child: Row(
               mainAxisSize: .max,
@@ -53,19 +55,14 @@ class CycleToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme cs = ColorScheme.of(context);
+    final AppColorsExtension cse = Theme.of(context).extension()!;
+
     return BaseContainer(
       height: MediaQuery.heightOf(context) * 0.08,
       width: MediaQuery.widthOf(context) * 0.8,
-      borderColor: AppColors.aMPMCycleBorder,
-      gradient: const LinearGradient(
-        colors: [
-          AppColors.background,
-          AppColors.aMPMCycleBgColor,
-          AppColors.background,
-          AppColors.aMPMCycleBgColor,
-        ],
-        stops: [0.25, 0.5, 0.75, 1.0],
-      ),
+      borderColor: cse.amPmCycleBorder,
+      backgroundColor: cs.surfaceContainerHighest,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: .center,
@@ -75,6 +72,7 @@ class CycleToggle extends StatelessWidget {
               label: 'AM Cycle',
               emoji: '☀️',
               isSelected: selected == DayPeriod.am,
+              isAM: selected == DayPeriod.am,
               onTap: () => onChanged(DayPeriod.am),
             ),
           ),
@@ -96,6 +94,7 @@ class _CycleTab extends StatelessWidget {
   final String label;
   final String emoji;
   final bool isSelected;
+  final bool isAM;
   final VoidCallback onTap;
 
   const _CycleTab({
@@ -103,10 +102,15 @@ class _CycleTab extends StatelessWidget {
     required this.emoji,
     required this.isSelected,
     required this.onTap,
+    this.isAM = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme cs = ColorScheme.of(context);
+    final AppColorsExtension cse = Theme.of(context).extension()!;
+    final TextTheme th = TextTheme.of(context);
+
     return GestureDetector(
       onTap: onTap,
       child: BaseAnimatedContainer(
@@ -114,13 +118,21 @@ class _CycleTab extends StatelessWidget {
         curve: Curves.easeInOut,
         height: MediaQuery.heightOf(context) * 0.08,
         gradient: isSelected
-            ? const LinearGradient(
-                colors: [AppColors.amCycleActive, AppColors.cardBackground],
+            ? LinearGradient(
+                colors: [cse.amActive, cs.surfaceContainerHighest],
                 stops: [0.5, 1.0],
               )
-            : null,
+            : isAM
+            ? LinearGradient(
+                colors: [cs.surfaceContainerHighest, cse.pmInactive],
+                stops: [0.5, 1.0],
+              )
+            : LinearGradient(
+                colors: [cse.pmInactive, cs.surfaceContainerHighest],
+                stops: [0.5, 1.0],
+              ),
         border: isSelected
-            ? const BorderSide(color: AppColors.amCycleBorder, width: 1.5)
+            ? BorderSide(color: cse.amPmBorder, width: 1.5)
             : null,
         child: Row(
           mainAxisAlignment: .center,
@@ -130,8 +142,8 @@ class _CycleTab extends StatelessWidget {
             Text(
               label,
               style: isSelected
-                  ? AppTextStyles.cycleLabel
-                  : AppTextStyles.cycleLabelInactive,
+                  ? th.titleMedium?.copyWith(color: cs.onSurface)
+                  : th.titleMedium,
             ),
           ],
         ),

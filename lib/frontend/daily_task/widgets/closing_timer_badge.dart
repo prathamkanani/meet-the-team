@@ -38,17 +38,19 @@ class ClosingTimerBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppColorsExtension cse = Theme.of(context).extension()!;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.timerBadge,
+        color: cse.timerBg,
         borderRadius: BorderRadius.circular(50),
-        border: Border.all(color: AppColors.timerBorder, width: 1.5),
+        border: Border.all(color: cse.timerBorder, width: 1.5),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.timer, color: AppColors.stopWatch),
+          Icon(Icons.timer, color: cse.timerText),
           AppSpacing.w08,
           TimerText(duration: duration),
         ],
@@ -99,9 +101,12 @@ class _TimerTextState extends State<TimerText> {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme th = TextTheme.of(context);
+    final AppColorsExtension cse = Theme.of(context).extension()!;
+
     return Text(
       'Closing in: ${_formatDuration(_remaining)}',
-      style: AppTextStyles.timerText,
+      style: th.titleSmall?.copyWith(color: cse.timerText),
     );
   }
 

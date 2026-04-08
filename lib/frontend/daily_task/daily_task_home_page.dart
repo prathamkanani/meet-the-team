@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entity/error.dart';
-import '../common/base_container.dart';
 import '../common/error_dialog.dart';
 import '../common/loader.dart';
 import '../config/app_spacing.dart';
@@ -9,14 +8,11 @@ import 'widgets/add_task_button.dart';
 import 'widgets/add_task_sheet.dart';
 import 'widgets/closing_timer_badge.dart';
 import 'widgets/cycle_toggle.dart';
-import 'widgets/task_card.dart';
 import '../../infrastructure/app_injector.dart';
 import '../../application/logic/daily_task/task_bloc.dart';
 import '../../application/logic/daily_task/task_event.dart';
 import '../../application/logic/daily_task/task_state.dart';
-import '../../domain/entity/task_entity.dart';
 import '../common/error_page.dart';
-import '../config/app_theme.dart';
 import 'widgets/task_list.dart';
 
 class DailyTaskHomePage extends StatefulWidget {
@@ -46,8 +42,9 @@ class _DailyTaskHomePageState extends State<DailyTaskHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme cs = ColorScheme.of(context);
+
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async => _taskBloc.add(LoadTasksEvent(dayPeriod)),
@@ -120,9 +117,12 @@ class _DailyTaskHomePageState extends State<DailyTaskHomePage> {
   }
 
   void errorDialog(BuildContext context, AppException exception) {
-    showDialog(context: context, builder: (context) {
-      return ErrorDialog(exception: exception);
-    });
+    showDialog(
+      context: context,
+      builder: (context) {
+        return ErrorDialog(exception: exception);
+      },
+    );
   }
 
   void _showAddTaskSheet(BuildContext context) {
@@ -143,29 +143,25 @@ class _DailyTaskAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme cs = ColorScheme.of(context);
+
     return SliverAppBar(
       pinned: true,
-      surfaceTintColor: AppColors.background,
-      backgroundColor: AppColors.background,
+      surfaceTintColor: cs.surfaceContainerHighest,
+      backgroundColor: cs.surfaceContainerHighest,
       title: Row(
         children: [
-          const Icon(Icons.menu_rounded, color: AppColors.textPrimary),
+          const Icon(Icons.menu_rounded),
           AppSpacing.w08,
-          const Expanded(
-            child: Text('Daily Task', style: AppTextStyles.appBarTitle),
-          ),
+          const Expanded(child: Text('Daily Task')),
           Container(
             width: 40,
             height: 40,
-            decoration: const BoxDecoration(
-              color: AppColors.userBg,
+            decoration: BoxDecoration(
+              color: cs.primary,
               shape: BoxShape.circle,
             ),
-            child: const Icon(
-              Icons.person_rounded,
-              color: AppColors.userIcon,
-              size: 20,
-            ),
+            child: Icon(Icons.person_rounded, color: cs.onPrimary),
           ),
         ],
       ),

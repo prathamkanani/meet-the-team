@@ -12,6 +12,9 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme cs = ColorScheme.of(context);
+    final TextTheme th = TextTheme.of(context);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -20,7 +23,7 @@ class TaskCard extends StatelessWidget {
           shape: RoundedSuperellipseBorder(
             borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
           ),
-          color: AppColors.cardBackground,
+          color: cs.surface,
           shadows: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
@@ -32,15 +35,18 @@ class TaskCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(task.taskId, style: AppTextStyles.ticketId),
+            Text(task.taskId, style: th.bodyMedium),
             AppSpacing.h04,
 
-            Text(task.title, style: AppTextStyles.cardTitle),
+            Text(
+              task.title,
+              style: th.titleMedium?.copyWith(color: cs.onSurface),
+            ),
             AppSpacing.h08,
 
             Text(
               task.description,
-              style: AppTextStyles.cardDescription,
+              style: th.bodyMedium,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -67,17 +73,19 @@ class _LightningBolt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppColorsExtension cse = Theme.of(context).extension()!;
+    final ColorScheme cs = ColorScheme.of(context);
+
     return Container(
       width: 36,
       height: 36,
       decoration: BoxDecoration(
-        color: isActive ? AppColors.boltActiveBg : AppColors.boltInactiveBg,
+        color: isActive ? cs.primary : cse.statusPill,
         shape: BoxShape.circle,
       ),
       child: Icon(
         Icons.bolt_rounded,
-        color: isActive ? AppColors.boltActive : AppColors.boltInactive,
-        size: 20,
+        color: isActive ? cs.onPrimary : cs.primary,
       ),
     );
   }

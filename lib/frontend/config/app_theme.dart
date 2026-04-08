@@ -2,20 +2,126 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static final ThemeData lightTheme = ThemeData(
-    // colorScheme: ColorScheme(
-    //   brightness: .light,
-    //   primary: primary,
-    //   onPrimary: Color(0xFFFFFFFF),
-    //   secondary: secondary,
-    //   onSecondary: onSecondary,
-    //   error: Color(0xFF9e403c),
-    //   onError: Color(0xFFFFFFFF),
-    //   surface: Color(0xFFf7f9fb),
-    //   onSurface: Color(0xFFFFFFFF),
-    // ),
+    useMaterial3: true,
+
+    scaffoldBackgroundColor: const Color(0xFFf7f9fb),
+
+    colorScheme: const ColorScheme(
+      brightness: .light,
+      primary: Color(0xFF525b71),
+      onPrimary: Color(0xFFFFFFFF),
+      secondary: Color(0xFFfef2c5),
+      onSecondary: Color(0xFF000000),
+      tertiary: Color(0xFF865400),
+      onTertiary: Color(0xFF8B6914),
+      error: Color(0xFF9e403c),
+      onError: Color(0xFFFFFFFF),
+      surface: Color(0xFFFFFFFF),
+      onSurface: Color(0xFF000000),
+      surfaceContainerHighest: Color(0xFFf7f9fb),
+      secondaryContainer: Color(0xFFe4ebf9),
+      onSecondaryContainer: Color(0xFFFFFFFF)
+    ),
+
+    textTheme:
+        const TextTheme(
+          titleLarge: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.3,
+          ),
+
+          titleMedium: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.2,
+          ),
+
+          bodyMedium: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            height: 1.5,
+          ),
+
+          labelLarge: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.1,
+          ),
+
+          labelMedium: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.2,
+          ),
+        ).apply(
+          bodyColor: const Color(0xFF566165),
+          displayColor: const Color(0xFF566165),
+        ),
+    
+    iconTheme: const IconThemeData(color: Color(0xFF525b71), size: 18),
+
+    extensions: [
+      const AppColorsExtension(
+        amActive: Color(0xFFfef2c5),
+        pmInactive: Color(0xFFe3e9f9),
+        amPmBorder: Color(0xFFe1e5e8),
+        amPmCycleBorder: Color(0xFFf0f4f7),
+        timerBg: Color(0xFFf7e6cb),
+        timerText: Color(0xFF865400),
+        timerBorder: Color(0xFFF5C842),
+        success: Color(0xFF006e2f),
+        warning: Color(0xFFf7a011),
+        danger: Color(0xFF9e403c),
+        neutral: Color(0xFF566165),
+        statusPill: Color(0xFFF3F4F6),
+      ),
+    ],
   );
 }
 
+@immutable
+class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
+  final Color amActive;
+  final Color pmInactive;
+  final Color amPmBorder;
+  final Color amPmCycleBorder;
+  final Color timerBg;
+  final Color timerText;
+  final Color timerBorder;
+
+  final Color success;
+  final Color warning;
+  final Color danger;
+  final Color neutral;
+  final Color statusPill;
+
+  const AppColorsExtension({
+    required this.amActive,
+    required this.pmInactive,
+    required this.amPmBorder,
+    required this.amPmCycleBorder,
+    required this.timerBg,
+    required this.timerText,
+    required this.timerBorder,
+    required this.success,
+    required this.warning,
+    required this.danger,
+    required this.neutral,
+    required this.statusPill
+  });
+
+  @override
+  AppColorsExtension copyWith() => this;
+
+  @override
+  AppColorsExtension lerp(ThemeExtension<AppColorsExtension>? other, double t) {
+    if (other is! AppColorsExtension) return this;
+    return this;
+  }
+}
+
+//region Not needed
 class AppColors {
   static const Color onSurface = Color(0xFFFFFFFF);
 
@@ -123,3 +229,5 @@ class AppTextStyles {
     letterSpacing: 0.1,
   );
 }
+
+//endregion

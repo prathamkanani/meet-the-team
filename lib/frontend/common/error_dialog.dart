@@ -19,71 +19,76 @@ class _ErrorDialogState extends State<ErrorDialog> {
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = TextTheme.of(context);
+    final ColorScheme cs = ColorScheme.of(context);
 
     return Dialog(
-      backgroundColor: AppColors.background,
+      backgroundColor: cs.surface,
       shape: RoundedSuperellipseBorder(borderRadius: BorderRadius.circular(30)),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisSize: .min,
           children: [
             // Image.asset(''),
-            const Icon(
-              Icons.warning_rounded,
-              size: 100,
-              color: AppColors.statusWarnOrangeBg,
-            ),
+            const Icon(Icons.warning_rounded, size: 100),
             AppSpacing.h08,
             Text(
               widget.exception.message,
               style: textTheme.titleLarge?.copyWith(fontWeight: .w600),
             ),
             AppSpacing.h08,
-            BaseContainer(
-              backgroundColor: AppColors.aMPMCycleBgColor,
-              borderRadius: 30,
-              child: Column(
-                mainAxisSize: .min,
-                children: [
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16),
-                      child: Row(
-                        children: [
-                          const Text(
-                            'TECHNICAL LOGS',
-                            style: AppTextStyles.cycleLabelInactive,
-                          ),
-                          const Spacer(),
-                          TextButton.icon(
-                            onPressed: () {
-                              setState(() {
-                                _showDetails = !_showDetails;
-                              });
-                            },
-                            label: Text(
-                              _showDetails ? 'Hide Details' : 'Show Details',
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _showDetails = !_showDetails;
+                });
+              },
+              child: BaseContainer(
+                backgroundColor: cs.secondaryContainer.withValues(alpha: 0.5),
+                borderRadius: 30,
+                child: Column(
+                  mainAxisSize: .min,
+                  children: [
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              'TECHNICAL LOGS',
+                              style: textTheme.titleMedium,
                             ),
-                            icon: Icon(
+                            const Spacer(),
+                            Text(
+                              _showDetails ? 'Hide Details' : 'Show Details',
+                              style: textTheme.bodyMedium?.copyWith(
+                                fontWeight: .w600,
+                              ),
+                            ),
+                            Icon(
                               _showDetails
                                   ? Icons.keyboard_arrow_up
                                   : Icons.keyboard_arrow_down,
+                              size: 16,
                             ),
-                            iconAlignment: .end,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  _showDetails ? const Divider() : const SizedBox.shrink(),
-                  _showDetails
-                      ? Padding(
-                          padding: const EdgeInsets.only(bottom: 12.0),
-                          child: Text(widget.exception.toString()),
-                        )
-                      : const SizedBox.shrink(),
-                ],
+                    _showDetails
+                        ? Divider(
+                            height: 0,
+                            color: cs.primary.withValues(alpha: 0.5),
+                          )
+                        : const SizedBox.shrink(),
+                    _showDetails
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 12.0),
+                            child: Text(widget.exception.toString()),
+                          )
+                        : const SizedBox.shrink(),
+                  ],
+                ),
               ),
             ),
             AppSpacing.h08,

@@ -10,13 +10,17 @@ class AddTaskButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppColorsExtension cse = Theme.of(context).extension()!;
+    final ColorScheme cs = ColorScheme.of(context);
+    final TextTheme th = TextTheme.of(context);
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: GestureDetector(
         onTap: () => onTap(context),
         child: BaseContainer(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-          backgroundColor: AppColors.addTaskBg,
+          backgroundColor: cs.primary,
           shadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.2),
@@ -24,17 +28,20 @@ class AddTaskButton extends StatelessWidget {
               offset: const Offset(0, 6),
             ),
           ],
-          child: const Row(
+          child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: .center,
             children: [
               Icon(
                 Icons.add_circle_outline_rounded,
-                color: AppColors.onSurface,
+                color: cs.onPrimary,
                 size: 20,
               ),
               AppSpacing.w08,
-              Text('Add Task', style: AppTextStyles.addTaskLabel),
+              Text(
+                'Add Task',
+                style: th.bodyMedium?.copyWith(color: cs.onPrimary),
+              ),
             ],
           ),
         ),
