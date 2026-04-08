@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BaseContainer extends StatelessWidget {
-  final double? height, width;
+  final double? height, width, borderRadius;
   final Color? borderColor;
   final Color? backgroundColor;
   final EdgeInsets? padding;
@@ -12,6 +12,7 @@ class BaseContainer extends StatelessWidget {
   const BaseContainer({
     super.key,
     required this.child,
+    this.borderRadius,
     this.borderColor,
     this.backgroundColor,
     this.padding,
@@ -29,7 +30,7 @@ class BaseContainer extends StatelessWidget {
       padding: padding,
       decoration: ShapeDecoration(
         shape: RoundedSuperellipseBorder(
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(borderRadius ?? 50),
           side: borderColor != null
               ? BorderSide(color: borderColor!, width: 6)
               : BorderSide.none,

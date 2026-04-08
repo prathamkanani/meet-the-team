@@ -109,7 +109,7 @@ class _DailyTaskHomePageState extends State<DailyTaskHomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => ErrorPage(
-          exception: state.exception!,
+          exception: state.exception,
           retry: () async {
             _taskBloc.add(LoadTasksEvent(state.dayPeriod));
             return;
