@@ -35,7 +35,10 @@ class TaskCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(task.taskId, style: th.bodyMedium),
+            Text(
+              task.taskId,
+              style: th.bodyMedium?.copyWith(fontWeight: .bold),
+            ),
             AppSpacing.h04,
 
             Text(
@@ -85,7 +88,7 @@ class _LightningBolt extends StatelessWidget {
       ),
       child: Icon(
         Icons.bolt_rounded,
-        color: isActive ? cs.onPrimary : cs.primary,
+        color: isActive ? cs.onPrimary : cse.neutral,
       ),
     );
   }

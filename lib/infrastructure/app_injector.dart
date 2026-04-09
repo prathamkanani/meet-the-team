@@ -3,10 +3,8 @@ import '../application/logic/error/error_cubit.dart';
 import '../domain/repository/error_repository.dart';
 import '../domain/repository/task_repository.dart';
 import 'repository/error_repository_impl.dart';
-import 'repository/mock_task_repo.dart';
 import 'repository/task_repository_impl.dart';
 import '../application/service/locator.dart';
-import 'source/user_source.dart';
 
 /// Global instance for locator
 final Locator locator = LocatorImpl();
@@ -21,20 +19,13 @@ abstract interface class AppInjector {
 class DependencyInjector implements AppInjector {
   @override
   Future<void> init() async {
-    //testing mock data
-    locator.registerFactory(() => MockTaskDataSource());
-    locator.registerFactory<MockTaskRepository>(
-      () => MockTaskRepository(locator.get()),
-    );
-
     // mock data
     locator.registerFactory<TaskRepository>(() => TaskRepositoryImpl());
     locator.registerFactory<TaskBloc>(
-      () =>
-          TaskBloc(locator.get<TaskRepository>(), locator.get(), locator.get()),
+      () => TaskBloc(locator.get<TaskRepository>(), locator.get()),
     );
 
-    locator.registerFactory<ErrorRepository>(() => ErrorRepositoryImpl());
+    locator.registerFactory<ErrorRepository>(() => const ErrorRepositoryImpl());
     locator.registerFactory(() => ErrorCubit(locator.get()));
   }
 }

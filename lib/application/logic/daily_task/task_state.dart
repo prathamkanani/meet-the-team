@@ -24,6 +24,11 @@ final class TaskLoadedState extends TaskState {
 
 final class TaskErrorState extends TaskState {
   final AppException exception;
+  final Future<void> Function() retry;
 
-  const TaskErrorState({required super.dayPeriod, required this.exception});
+  const TaskErrorState({
+    required super.dayPeriod,
+    required this.exception,
+    required this.retry,
+  });
 }

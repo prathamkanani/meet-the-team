@@ -5,6 +5,8 @@ import '../../application/logic/error/error_state.dart';
 import '../../domain/entity/error.dart';
 import '../../infrastructure/app_injector.dart';
 import '../config/app_spacing.dart';
+import '../config/app_theme.dart';
+import 'report_dialog.dart';
 
 class ErrorPage extends StatefulWidget {
   final AppException exception;
@@ -33,13 +35,20 @@ class _ErrorPageState extends State<ErrorPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme cs = ColorScheme.of(context);
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Error")),
+      appBar: AppBar(
+        title: const Text("Error"),
+        backgroundColor: cs.surfaceContainerHighest,
+      ),
       body: BlocConsumer<ErrorCubit, ErrorState>(
         bloc: _cubit,
-        listener: (_, state) {
-          if (state is ErrorReportedState || state is ErrorRetryState) {
+        listener: (context, state) {
+          if (state is ErrorRetryState) {
             Navigator.pop(context);
+          } else if (state is ErrorReportedState) {
+            _showReportDialog(context);
           }
         },
         builder: (context, state) {
@@ -56,6 +65,11 @@ class _ErrorPageState extends State<ErrorPage> {
         },
       ),
     );
+  }
+
+  Future<void> _showReportDialog(BuildContext context) async {
+    await showDialog(context: context, builder: (_) => const ReportDialog());
+    if (context.mounted) Navigator.pop(context);
   }
 }
 
@@ -74,51 +88,38 @@ class _ErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ErrorTheme et = Theme.of(context).extension<ErrorTheme>()!;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline, size: 60),
+            Icon(Icons.error_outline, size: 60, color: et.primaryColor),
             AppSpacing.h16,
             Text(
               errorEntity.message,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16, color: et.primaryColor),
             ),
             AppSpacing.h16,
-            ElevatedButton(
+            FilledButton.icon(
               onPressed: () => cubit.retry(retry),
-              child: const Text("Retry"),
+              label: const Text('Retry'),
+              icon: const Icon(Icons.refresh),
+              style: et.retryButtonStyle,
             ),
-            AppSpacing.h16,
-            TextButton(
-              onPressed: () => _showDetails(context),
-              child: const Text("Show Details"),
-            ),
-            TextButton(
+            AppSpacing.h08,
+            TextButton.icon(
               onPressed: () => cubit.report(exception),
-              child: const Text("Report Issue"),
+              label: const Text('Report'),
+              icon: const Icon(Icons.bug_report_outlined),
+              iconAlignment: .start,
+              style: et.reportButtonStyle,
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _showDetails(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text("Error Details"),
-        content: Text(errorEntity.error.toString()),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Close"),
-          ),
-        ],
       ),
     );
   }

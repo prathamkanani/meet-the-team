@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'application/logic/error/error_cubit.dart';
 import 'frontend/common/error_page.dart';
 import 'frontend/config/app_theme.dart';
 import 'frontend/daily_task/daily_task_home_page.dart';
@@ -15,9 +17,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: AppTheme.lightTheme,
-      home: const DailyTaskHomePage(),
+    return BlocProvider(
+      create: (_) => ErrorCubit(locator.get()),
+      child: MaterialApp(
+        theme: AppTheme.lightTheme,
+        home: const DailyTaskHomePage(),
+      ),
     );
   }
 }

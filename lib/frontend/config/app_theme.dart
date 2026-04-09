@@ -20,7 +20,7 @@ class AppTheme {
       onSurface: Color(0xFF000000),
       surfaceContainerHighest: Color(0xFFf7f9fb),
       secondaryContainer: Color(0xFFe4ebf9),
-      onSecondaryContainer: Color(0xFFFFFFFF)
+      onSecondaryContainer: Color(0xFFFFFFFF),
     ),
 
     textTheme:
@@ -58,7 +58,7 @@ class AppTheme {
           bodyColor: const Color(0xFF566165),
           displayColor: const Color(0xFF566165),
         ),
-    
+
     iconTheme: const IconThemeData(color: Color(0xFF525b71), size: 18),
 
     extensions: [
@@ -75,6 +75,18 @@ class AppTheme {
         danger: Color(0xFF9e403c),
         neutral: Color(0xFF566165),
         statusPill: Color(0xFFF3F4F6),
+      ),
+
+      ErrorTheme(
+        primaryColor: const Color(0xFF000000),
+        secondaryColor: const Color(0xFFf7a011),
+        retryButtonStyle: FilledButton.styleFrom(
+          backgroundColor: const Color(0xFF1da1f2),
+          foregroundColor: const Color(0xFFFFFFFF),
+        ),
+        reportButtonStyle: TextButton.styleFrom(
+          foregroundColor: const Color(0xFFC41E3A),
+        ),
       ),
     ],
   );
@@ -108,7 +120,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.warning,
     required this.danger,
     required this.neutral,
-    required this.statusPill
+    required this.statusPill,
   });
 
   @override
@@ -118,6 +130,56 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   AppColorsExtension lerp(ThemeExtension<AppColorsExtension>? other, double t) {
     if (other is! AppColorsExtension) return this;
     return this;
+  }
+}
+
+@immutable
+class ErrorTheme extends ThemeExtension<ErrorTheme> {
+  final Color primaryColor;
+  final Color secondaryColor;
+  final ButtonStyle? retryButtonStyle;
+  final ButtonStyle? reportButtonStyle;
+
+  const ErrorTheme({
+    required this.primaryColor,
+    required this.secondaryColor,
+    this.reportButtonStyle,
+    this.retryButtonStyle,
+  });
+
+  @override
+  ErrorTheme copyWith({
+    Color? primaryColor,
+    Color? secondaryColor,
+    ButtonStyle? retryButtonStyle,
+    ButtonStyle? reportButtonStyle,
+  }) {
+    return ErrorTheme(
+      primaryColor: primaryColor ?? this.primaryColor,
+      secondaryColor: secondaryColor ?? this.secondaryColor,
+      retryButtonStyle: retryButtonStyle ?? this.retryButtonStyle,
+      reportButtonStyle: reportButtonStyle ?? this.reportButtonStyle,
+    );
+  }
+
+  @override
+  ThemeExtension<ErrorTheme> lerp(ErrorTheme? other, double t) {
+    if (other is! ErrorTheme) return this;
+
+    return ErrorTheme(
+      reportButtonStyle: ButtonStyle.lerp(
+        reportButtonStyle,
+        other.reportButtonStyle,
+        t,
+      ),
+      retryButtonStyle: ButtonStyle.lerp(
+        retryButtonStyle,
+        other.retryButtonStyle,
+        t,
+      ),
+      primaryColor: Color.lerp(primaryColor, other.primaryColor, t)!,
+      secondaryColor: Color.lerp(secondaryColor, other.secondaryColor, t)!,
+    );
   }
 }
 

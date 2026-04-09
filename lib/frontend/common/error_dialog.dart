@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../application/logic/error/error_cubit.dart';
 import '../../domain/entity/error.dart';
 import '../config/app_spacing.dart';
 import '../config/app_theme.dart';
@@ -6,8 +7,15 @@ import 'base_container.dart';
 
 class ErrorDialog extends StatefulWidget {
   final AppException exception;
+  final ErrorCubit errorCubit;
+  final Future<void> Function() retry;
 
-  const ErrorDialog({super.key, required this.exception});
+  const ErrorDialog({
+    super.key,
+    required this.exception,
+    required this.errorCubit,
+    required this.retry,
+  });
 
   @override
   State<ErrorDialog> createState() => _ErrorDialogState();
@@ -20,6 +28,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
   Widget build(BuildContext context) {
     final TextTheme textTheme = TextTheme.of(context);
     final ColorScheme cs = ColorScheme.of(context);
+    final ErrorTheme et = Theme.of(context).extension<ErrorTheme>()!;
 
     return Dialog(
       backgroundColor: cs.surface,
@@ -30,13 +39,17 @@ class _ErrorDialogState extends State<ErrorDialog> {
           mainAxisSize: .min,
           children: [
             // Image.asset(''),
-            const Icon(Icons.warning_rounded, size: 100),
+            Icon(Icons.warning_rounded, size: 100, color: et.secondaryColor),
             AppSpacing.h08,
             Text(
               widget.exception.message,
-              style: textTheme.titleLarge?.copyWith(fontWeight: .w600),
+              textAlign: .center,
+              style: textTheme.titleLarge?.copyWith(
+                fontWeight: .w600,
+                color: et.primaryColor,
+              ),
             ),
-            AppSpacing.h08,
+            AppSpacing.h16,
             GestureDetector(
               onTap: () {
                 setState(() {
@@ -56,13 +69,16 @@ class _ErrorDialogState extends State<ErrorDialog> {
                           children: [
                             Text(
                               'TECHNICAL LOGS',
-                              style: textTheme.titleMedium,
+                              style: textTheme.titleMedium?.copyWith(
+                                color: et.primaryColor,
+                              ),
                             ),
                             const Spacer(),
                             Text(
                               _showDetails ? 'Hide Details' : 'Show Details',
                               style: textTheme.bodyMedium?.copyWith(
                                 fontWeight: .w600,
+                                color: et.primaryColor,
                               ),
                             ),
                             Icon(
@@ -70,6 +86,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
                                   ? Icons.keyboard_arrow_up
                                   : Icons.keyboard_arrow_down,
                               size: 16,
+                              color: et.primaryColor,
                             ),
                           ],
                         ),
@@ -84,25 +101,30 @@ class _ErrorDialogState extends State<ErrorDialog> {
                     _showDetails
                         ? Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12.0),
-                            child: Text(widget.exception.toString()),
+                            child: Text(
+                              widget.exception.toString(),
+                              style: TextStyle(color: et.primaryColor),
+                            ),
                           )
                         : const SizedBox.shrink(),
                   ],
                 ),
               ),
             ),
-            AppSpacing.h08,
+            AppSpacing.h16,
             FilledButton.icon(
-              onPressed: () {},
+              onPressed: () => widget.errorCubit.retry(widget.retry),
               label: const Text('Retry'),
               icon: const Icon(Icons.refresh),
+              style: et.retryButtonStyle,
             ),
             AppSpacing.h08,
             TextButton.icon(
-              onPressed: () {},
+              onPressed: () => widget.errorCubit.report(widget.exception),
               label: const Text('Report'),
               icon: const Icon(Icons.bug_report_outlined),
               iconAlignment: .start,
+              style: et.reportButtonStyle,
             ),
           ],
         ),
